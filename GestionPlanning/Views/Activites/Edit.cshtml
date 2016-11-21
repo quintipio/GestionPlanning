@@ -1,0 +1,75 @@
+﻿@model GestionPlanning.Models.Activites
+
+@{
+    ViewBag.Title = "Modifier une actvité";
+}
+
+<h2>Modifier une actvité</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <script>
+        $(document).ready(function () {
+            $('#saveButton').click(function () {
+                $(this).prop("disabled", true);
+                if (!$('form').valid())
+                {
+                    $(this).prop("disabled",false);
+                    return false;
+                }
+                $('form').submit();
+            });
+        });
+    </script>
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.UtilisateurId)
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.TypeActiviteId, "Type d'activité")
+                @Html.DropDownList("TypeActiviteId", null, htmlAttributes: new { @class = "form-control", style = "margin-top:5px;" })
+                @Html.ValidationMessageFor(model => model.TypeActiviteId, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DateDebut)
+                <input type="date" id="DateDebut" name="DateDebut" value="@($"{Model.DateDebut:yyyy-MM-dd}")" class = "form-control" />
+                @Html.EnumDropDownListFor(model => model.DemiJourneeDebut, null, htmlAttributes: new { @class = "form-control", style = "margin-top:5px;" })
+                @Html.ValidationMessageFor(model => model.DateDebut, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(model => model.DemiJourneeDebut, "", new { @class = "text-danger" })
+        </div>
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DateFin)
+                <input type="date" id="DateFin" name="DateFin" value="@($"{Model.DateFin:yyyy-MM-dd}")" class = "form-control" />
+                @Html.EnumDropDownListFor(model => model.DemiJourneeFin, null, htmlAttributes: new { @class = "form-control", style = "margin-top:5px;" })
+                @Html.ValidationMessageFor(model => model.DateFin, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(model => model.DemiJourneeFin, "", new { @class = "text-danger" })
+        </div>
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Commentaire)
+                @Html.TextAreaFor(model => model.Commentaire, new { style = "width:300px;height:100px;", @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Commentaire, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+                <input type="submit" value="Modifier" class="btn btn-default" id="saveButton"/>
+        </div>
+    </div>
+}
+
+
+<div>
+    @Html.ActionLink("Page précédente", "Index")
+</div>
+

@@ -1,0 +1,61 @@
+﻿@using GestionPlanning.Context
+@using GridMvc.Html
+@model IEnumerable<GestionPlanning.Models.Activites>
+
+@{
+    ViewBag.Title = "Mes activités à venir";
+}
+
+<h2>Mes activités à venir</h2>
+
+<p>
+    @Html.ActionLink("Créer", "Create")
+</p>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.TypeActivites.Nom)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateDebut)
+        </th>
+        <th/>
+        
+        <th>
+            @Html.DisplayNameFor(model => model.DateFin)
+        </th>
+        <th/>
+        <th />
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.TypeActivites.Nom)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateDebut)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DemiJourneeDebut)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateFin)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DemiJourneeFin)
+        </td>
+        <td>
+            @Html.ActionLink("Modifier", "Edit", new { id = item.Id }) |
+            @Html.ActionLink("Supprimer", "Delete", new { id = item.Id }) |
+            
+            @if (item.TypeActiviteId == ContexteStatic.IdActivitePermission)
+            {
+               @Html.ActionLink("Générer un fichier de permission", "GeneratePerm", new { id = item.Id })
+            }
+        </td>
+    </tr>
+}
+
+</table>

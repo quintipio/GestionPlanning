@@ -1,0 +1,87 @@
+﻿@using GestionPlanning.Utils
+@using GridMvc.Html
+@model GestionPlanning.Models.Evenements
+
+@{
+    ViewBag.Title = "Consulter un évènement";
+}
+
+<h2>Consulter un évènement</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model =>  model.Id)
+
+    <div class="form-group">
+        <h2>@Html.DisplayFor(model => model.Titre)</h2>
+        <p><b>Créateur :</b> @Html.DisplayFor(model => model.Createur.Nom) @Html.DisplayFor(model => model.Createur.Prenom)</p>
+        <p><b>Date limite de réponse  :</b> @Html.DisplayFor(model => model.DateVerrou)</p>
+        <p><b>Commentaire :</b> @Html.DisplayFor(model => model.Commentaire)</p>
+
+        @if (Model.DateVerrou < DateUtils.GetAujourdhui() || 
+            (Model.SelectedDate == 1 && Model.Date < DateUtils.GetAujourdhui()) ||
+            (Model.SelectedDate == 2 && Model.DateB < DateUtils.GetAujourdhui()) ||
+            (Model.SelectedDate == 3 && Model.DateC < DateUtils.GetAujourdhui()))
+        {
+            <p><b>Ma participation : (date limite de réponse dépassé)</b></p>
+            <p>
+                Présent ?
+                @Html.RadioButton("IsPresentPresence", 1,new { disabled="disabled"}) Oui @Html.RadioButton("IsPresentPresence", 0, new { disabled = "disabled" }) Non
+                @Html.ValidationMessage("IsPresentPresence", "", new { @class = "text-danger" })
+            </p>
+            <p>
+                <b>Commentaire</b>
+                @Html.TextBox("CommentairePresence", null, new { @class = "form-control", disabled = "disabled" })
+                @Html.ValidationMessage("CommentairePresence", "", new { @class = "text-danger" })
+            </p>
+        }
+        else
+        {
+            <p><b>Ma participation :</b></p>
+
+            <p>
+                <b>Date :</b>
+                @Html.ValidationMessage("IsDateSelect", "", new { @class = "text-danger" })
+                <div>@Html.RadioButtonFor(model => model.SelectedDate, 1) @Html.DisplayFor(model => model.Date) @Html.Label("-") @Html.DisplayFor(model => model.DemiJournee)</div>
+                @if (Model.DateB != null)
+                {
+                    <div>@Html.RadioButtonFor(model => model.SelectedDate, 2) @Html.DisplayFor(model => model.DateB) @Html.Label("-") @Html.DisplayFor(model => model.DemiJourneeB)</div>
+                }
+                @if (Model.DateC != null)
+                {
+                    <div>@Html.RadioButtonFor(model => model.SelectedDate, 3) @Html.DisplayFor(model => model.DateC) @Html.Label("-") @Html.DisplayFor(model => model.DemiJourneeC)</div>
+                }
+            </p>
+             <p>
+                Présent ?
+                @Html.RadioButtonFor(model => model.IsUtilisateurPresent, true) Oui @Html.RadioButtonFor(model => model.IsUtilisateurPresent, false) Non
+                @Html.ValidationMessage("IsPresentPresence", "", new { @class = "text-danger" })
+            </p>
+            <p>
+                <b>Commentaire</b>
+                @Html.TextBoxFor(model => model.CommentaireUtilisateur, new { @class = "form-control" })
+                @Html.ValidationMessage("CommentairePresence", "", new { @class = "text-danger" })
+            </p>
+            <div class="form-group">
+                <input type="submit" value="Valider" class="btn btn-default" name="ValidConsult"/> | @Html.ActionLink("Page précédente", "MesEvenements")
+            </div>
+        }
+        
+
+        <div class="form-group">
+            <input type="submit" value="Télécharger" class="btn btn-default" name="DownloadConsult"/>
+        </div>
+
+        <p><b>Participants :</b></p>
+        @Html.Grid(Model.EvenementsUtilisateurs).Columns(columns =>
+   {
+       columns.Add(model => model.Utilisateurs.Nom).Titled("Nom").Sortable(true);
+       columns.Add(model => model.Utilisateurs.Prenom).Titled("Prenom").Sortable(false);
+       columns.Add().Titled("Date").RenderValueAs(model => (model.DateSelected.HasValue) ? DateUtils.GetDateFormat(model.DateSelected.Value,"yyyy-MM-dd")+"-"+model.DemiJourneeSelected : " ").Sortable(true);
+       columns.Add().Titled("Est présent").RenderValueAs(model => (model.IsPresent.HasValue) ?((model.IsPresent.Value)?"OUI":"NON"):" ").Sortable(true);
+       columns.Add(model => model.Commentaire).Titled("Commentaire");
+   }).WithPaging(10)
+    </div>
+}

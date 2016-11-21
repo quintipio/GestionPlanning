@@ -1,0 +1,55 @@
+﻿@model GestionPlanning.Models.Grades
+
+@{
+    ViewBag.Title = "Effacer un grade";
+}
+
+<h2>Effacer un grade</h2>
+
+<h3>Êtes vous sûr de vouloir effacer ce grade?</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Armes.Nom)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Armes.Nom)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Nom)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Nom)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Diminutif)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Diminutif)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Etat)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Etat)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Effacer" class="btn btn-default" /> |
+            @Html.ActionLink("Page précédente", "Index")
+        </div>
+    }
+</div>

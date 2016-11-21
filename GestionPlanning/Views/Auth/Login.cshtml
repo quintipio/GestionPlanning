@@ -1,0 +1,37 @@
+﻿@model GestionPlanning.Models.Utilisateurs
+@{
+    ViewBag.Title = "Connexion";
+}
+
+<h2>Connexion</h2>
+@Html.ValidationSummary(true)
+
+<script>
+        $(document).ready(function () {
+            $('#saveButton').click(function () {
+                $(this).prop("disabled", true);
+                if (!$('form').valid())
+                {
+                    $(this).prop("disabled",false);
+                    return false;
+                }
+                $('form').submit();
+            });
+        });
+</script>
+
+@using (Html.BeginForm())
+{
+    @Html.LabelFor(u => u.Email)<br/>
+    @Html.TextBoxFor(u => u.Email)
+    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+<br/>
+    @Html.LabelFor(u => u.MotDePasse)<br/>
+    @Html.PasswordFor(u => u.MotDePasse)
+    @Html.ValidationMessageFor(model => model.MotDePasse, "", new { @class = "text-danger" })
+<br/>
+    <p>
+        <button type="submit" id="saveButton">Valider</button>
+    </p>
+}
+

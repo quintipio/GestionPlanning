@@ -1,0 +1,89 @@
+﻿@model GestionPlanning.Models.Utilisateurs
+
+@{
+    ViewBag.Title = "Détails";
+}
+
+<h2>Détails</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Grades.Nom)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Grades.Nom)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Poles.Nom)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Poles.Nom)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Nom)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Nom)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Prenom)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Prenom)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Nid)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Nid)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Pnia)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Pnia)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Etat)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Etat)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Role)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Role)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Modifier", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Page précédente", "Index")
+</p>

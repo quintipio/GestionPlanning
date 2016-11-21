@@ -1,0 +1,106 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+.menu-left {
+    width: 250px;
+    background-color: #222222;
+    color: grey;
+    padding-bottom: 20px;
+    margin-right: 50px;
+    margin-top: 20px;
+}
+
+.title-menu-left {
+    padding-top: 10px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 14px;
+    
+}
+
+.planning {
+     border-width:1px; 
+     border-style:solid; 
+     border-color:black;
+
+}
+
+.planning th {
+    width: 30px;
+    height: 30px;
+    border-width:1px; 
+    border-style:solid; 
+    border-color:black;
+    text-align: center;
+}
+
+.planning tr td {
+    width: 30px;
+    height: 30px;
+    border-width:1px; 
+    border-style:solid; 
+    border-color:black;
+}
+
+.journeePlanning {
+    width: 30px;
+    height: 60px;
+}
+
+.buttonPlanning {
+    width: 28px;
+    height: 28px;
+    border: none;
+}
+
+.divPlanning {
+    width: 28px;
+    height: 29px;
+    border: none;
+    text-align: center;
+    color: black;
+}
+
+
+.repas {
+     border-width:1px; 
+     border-style:solid; 
+     border-color:black;
+
+}
+
+.repas th {
+    width: 30px;
+    height: 30px;
+    border-width:1px; 
+    border-style:solid; 
+    border-color:black;
+    text-align: center;
+    padding: 8px;
+
+}
+
+.repas tr td {
+    padding: 8px;
+    width: 30px;
+    height: 30px;
+    border-width:1px; 
+    border-style:solid; 
+    border-color:black;
+    text-align: center;
+}

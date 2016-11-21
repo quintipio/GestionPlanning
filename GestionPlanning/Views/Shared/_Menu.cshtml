@@ -1,0 +1,48 @@
+﻿@using GestionPlanning.Context
+@using GestionPlanning.Enum
+@if (@User.Identity.IsAuthenticated)
+{
+
+    <div class="menu-left">
+        @if (@User.IsInRole(RoleEnum.ADMINISTRATEUR.ToString()))
+        {
+            <p class="title-menu-left">Administration</p>
+            <hr style="text-align: center; width: 75%;"/>
+            <ul>
+                <li>@Html.ActionLink("Logs", "Logs", "Applications")</li>
+                <li>@Html.ActionLink("Gestion de l'Application", "Edit", "Applications")</li>
+                <li>@Html.ActionLink("Gestion des types d'activités", "Index", "TypeActivites")</li>
+                <li>@Html.ActionLink("Gestion des pôles", "Index", "Poles")</li>
+                <li>@Html.ActionLink("Gestion des armes", "Index", "Armes")</li>
+                <li>@Html.ActionLink("Gestion des grades", "Index", "Grades")</li>
+                <li>@Html.ActionLink("Gestion des emails", "Index", "Mails")</li>
+                <li>@Html.ActionLink("Gestion des utilisateurs", "Index", "Utilisateurs")</li>
+                <li>@Html.ActionLink("Gestion des permissions", "Index", "Permissions")</li>
+            </ul>
+        }
+
+
+        @if ((@User.IsInRole(RoleEnum.ADMINISTRATEUR.ToString()) || @User.IsInRole(RoleEnum.UTILISATEUR.ToString())) && (@User.Identity.Name != ContexteStatic.NomSuperAdmin+" "+ContexteStatic.PrenomSuperAdmin))
+        {
+            <p class="title-menu-left">Mon compte</p>
+            <hr style="text-align: center; width: 75%;"/>
+            <ul>
+                <li>@Html.ActionLink("Informations personnelles", "ChangeInfoPerso", "Utilisateurs")</li>
+                <li>@Html.ActionLink("Mes activités", "Index", "Activites")</li>
+                <li>@Html.ActionLink("Mes évènements", "MesEvenements", "Evenements")</li>
+                <li>@Html.ActionLink("Mon pointage repas", "PlanningMessPerso", "Repas")</li>
+            </ul>
+        }
+        <p class="title-menu-left">Outils</p>
+        <hr style="text-align: center; width: 75%;" />
+        <ul>
+            <li>@Html.ActionLink("Planning", "Index", "Planning")</li>
+            <li>@Html.ActionLink("Listing des repas", "ListingRepas", "Repas")</li>
+            <li>@Html.ActionLink("Annuaire", "Annuaire", "Utilisateurs")</li>
+        </ul>
+
+
+        <hr style="text-align: center; width: 75%;" />
+    </div>
+}
+

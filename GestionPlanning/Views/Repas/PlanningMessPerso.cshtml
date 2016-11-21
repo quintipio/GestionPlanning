@@ -1,0 +1,87 @@
+﻿@model GestionPlanning.ViewModel.RepasViewModel
+
+@{
+    ViewBag.Title = "Pointage Repas";
+}
+
+<h2>Pointage repas</h2>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <input type="hidden" value="@Model.DateDeb" name="inputDate" id="inputDate"/>
+   
+    <input type="submit" value="<" name="PreviousWeek"/>
+    <b>Du</b>
+    @Html.DisplayFor(model => model.DateDeb.Day); @Html.DisplayFor(model => model.MoisAnneeDateDeb);
+    <b>au</b>
+    @Html.DisplayFor(model => model.DateFin.Day); @Html.DisplayFor(model => model.MoisAnneeDateFin);
+    <input type="submit" value=">" name="NextWeek"/>
+
+    <hr/>
+    <script>
+            function SaveModif(libelle, etat) {
+                $.ajax(
+                {
+                    url: "/Repas/AjaxModifRepas",
+                    data: {
+                        input: libelle + ((etat) ? "=1" : "=0"),
+                        date: $("#inputDate").val()
+                        } ,
+                        type: "POST"
+                    }
+                );
+            }
+    </script>
+
+
+
+    <table class="repas">
+        <tr>
+            <th>Moment</th>
+            <th>Lundi</th>
+            <th>Mardi</th>
+            <th>Mercredi</th>
+            <th>Jeudi</th>
+            <th>Vendredi</th>
+        </tr>
+        <tr>
+            <td>Midi</td>
+            @if (Model.IsDisable)
+            {
+                <td>@Html.CheckBoxFor(model => model.IsLundiMidi, new { onclick = "SaveModif('LundiMidi',this.checked)",disabled="disabled" })</td>
+                <td>@Html.CheckBoxFor(model => model.IsMardiMidi, new { onclick = "SaveModif('MardiMidi',this.checked)", disabled = "disabled" })</td>
+                <td>@Html.CheckBoxFor(model => model.IsMercrediMidi, new { onclick = "SaveModif('MercrediMidi',this.checked)", disabled = "disabled" })</td>
+                <td>@Html.CheckBoxFor(model => model.IsJeudiMidi, new { onclick = "SaveModif('JeudiMidi',this.checked)", disabled = "disabled" })</td>
+                <td>@Html.CheckBoxFor(model => model.IsVendrediMidi, new { onclick = "SaveModif('VendrediMidi',this.checked)", disabled = "disabled" })</td>
+            }
+            else
+            {
+                <td>@Html.CheckBoxFor(model => model.IsLundiMidi, new { onclick = "SaveModif('LundiMidi',this.checked)" })</td>
+                <td>@Html.CheckBoxFor(model => model.IsMardiMidi, new { onclick = "SaveModif('MardiMidi',this.checked)" })</td>
+                <td>@Html.CheckBoxFor(model => model.IsMercrediMidi, new { onclick = "SaveModif('MercrediMidi',this.checked)" })</td>
+                <td>@Html.CheckBoxFor(model => model.IsJeudiMidi, new { onclick = "SaveModif('JeudiMidi',this.checked)" })</td>
+                <td>@Html.CheckBoxFor(model => model.IsVendrediMidi, new { onclick = "SaveModif('VendrediMidi',this.checked)" })</td>
+            }
+           
+        </tr>
+
+        <tr>
+            <td>Soir</td>
+            @if (Model.IsDisable)
+            {
+                <td>@Html.CheckBoxFor(model => model.IsLundiSoir, new { onclick = "SaveModif('LundiSoir',this.checked)", disabled = "disabled" })</td>
+                <td>@Html.CheckBoxFor(model => model.IsMardiSoir, new { onclick = "SaveModif('MardiSoir',this.checked)", disabled = "disabled" })</td>
+                <td>@Html.CheckBoxFor(model => model.IsMercrediSoir, new { onclick = "SaveModif('MercrediSoir',this.checked)", disabled = "disabled" })</td>
+                <td>@Html.CheckBoxFor(model => model.IsJeudiSoir, new { onclick = "SaveModif('JeudiSoir',this.checked)", disabled = "disabled" })</td>
+            }
+            else
+            {
+                <td>@Html.CheckBoxFor(model => model.IsLundiSoir, new { onclick = "SaveModif('LundiSoir',this.checked)" })</td>
+                <td>@Html.CheckBoxFor(model => model.IsMardiSoir, new { onclick = "SaveModif('MardiSoir',this.checked)" })</td>
+                <td>@Html.CheckBoxFor(model => model.IsMercrediSoir, new { onclick = "SaveModif('MercrediSoir',this.checked)" })</td>
+                <td>@Html.CheckBoxFor(model => model.IsJeudiSoir, new { onclick = "SaveModif('JeudiSoir',this.checked)" })</td>
+            }
+            <td>X</td>
+        </tr>
+    </table>
+}

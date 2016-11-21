@@ -1,0 +1,44 @@
+﻿@model IEnumerable<GestionPlanning.Models.TypeActivites>
+
+@{
+    ViewBag.Title = "Liste des activités";
+}
+
+<h2>Liste des activités</h2>
+
+<p>
+    @Html.ActionLink("Créer", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Nom)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ModifierRepas)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Nom)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ModifierRepas)
+        </td>
+        <td>
+            @if (item.Id != 1)
+            {
+                @Html.ActionLink("Modifier", "Edit", new { id = item.Id })
+                @Html.Label(" | ")
+                @Html.ActionLink("Détails", "Details", new { id = item.Id })
+                @Html.Label(" | ")
+                @Html.ActionLink("Supprimer", "Delete", new { id = item.Id })
+            }
+        </td>
+    </tr>
+}
+
+</table>

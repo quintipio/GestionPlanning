@@ -1,0 +1,75 @@
+﻿@using GestionPlanning.Context
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <script src="~/Scripts/modernizr-2.8.3.js"></script>
+    <script src="~/Scripts/jquery-2.1.4.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @if (@User.Identity.IsAuthenticated)
+                {
+                    @Html.ActionLink("Bonjour " + @User.Identity.Name, "Index", "Planning", new { area = "" }, new { @class = "navbar-brand" })
+                }
+                else
+                {
+                    @Html.ActionLink("Login", "Login", "Auth", new { area = "" }, new { @class = "navbar-brand" })
+                }
+            </div>
+
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li>
+                            <a href="@Url.Action("Logout", "Auth")"> Déconnexion</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li><a href="@Url.Action("Index", "Planning")"> Planning</a></li>
+                        <li><a href="@Url.Action("ListingRepas", "Repas")"> Repas</a></li>
+                        <li><a href="@Url.Action("Annuaire", "Utilisateurs")"> Annuaire</a></li>
+                    }
+                </ul>
+                <span style="color: grey; font-size: 20px; font-weight: bolder; margin-left: 200px;">@ContexteApplication.Application.NomAppli - @ContexteApplication.Application.NomUnite</span>
+            </div>
+
+        </div>
+    </div>
+
+<div class="container body-content">
+    <table>
+        <tr>
+            <td style="vertical-align: top;">
+               @RenderPage("_Menu.cshtml")
+            </td>
+
+            <td style="width:100%">
+                @RenderBody()
+            </td>
+        </tr>
+    </table>
+    <hr/>
+    <footer>
+        <p>&copy; @DateTime.Now.Year - @ContexteApplication.Application.NomAppli - Version : @ContexteStatic.Version</p>
+    </footer>
+</div>
+
+</body>
+</html>

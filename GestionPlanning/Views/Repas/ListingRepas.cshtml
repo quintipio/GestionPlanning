@@ -1,0 +1,69 @@
+﻿@model GestionPlanning.ViewModel.RepasViewModel
+
+@{
+    ViewBag.Title = "Listing des repas";
+}
+
+<h2>Listing des repas</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <input type="hidden" value="@Model.DateDeb" name="inputDate"/>
+
+    <input type="submit" value="<" name="PreviousWeek" />
+        <b>Du</b>
+        @Html.DisplayFor(model => model.DateDeb.Day); @Html.DisplayFor(model => model.MoisAnneeDateDeb);
+    <b>au</b>
+    @Html.DisplayFor(model => model.DateFin.Day); @Html.DisplayFor(model => model.MoisAnneeDateFin);
+    <input type="submit" value=">" name="NextWeek" />
+    <br/>
+    <input type="submit" value="Télécharger" name="DownloadDoc" class="btn btn-default"/>
+
+    <hr/>
+
+}
+
+<table class="repas">
+    <tr>
+        <th>Personnel</th>
+        <th>Lundi midi</th>
+        <th>Lundi soir</th>
+        <th>Mardi midi</th>
+        <th>Mardi soir</th>
+        <th>Merredi midi</th>
+        <th>Mercredi soir</th>
+        <th>Jeudi midi</th>
+        <th>Jeudi soir</th>
+        <th>Vendredi midi</th>
+    </tr>
+
+    @foreach (var repas in Model.Listing)
+    {
+        <tr>
+            <td>@Html.DisplayFor(modelItem => repas.User.Nom) @Html.DisplayFor(modelItem => repas.User.Prenom)</td>
+            <td>@if (repas.IsLundiMidi)  {<span>X</span>} </td>
+            <td>@if (repas.IsLundiSoir)  {<span>X</span>} </td>
+            <td>@if (repas.IsMardiMidi)  {<span>X</span>} </td>
+            <td>@if (repas.IsMardiSoir)  {<span>X</span>} </td>
+            <td>@if (repas.IsMercrediMidi)  {<span>X</span>} </td>
+            <td>@if (repas.IsMercrediSoir)  {<span>X</span>} </td>
+            <td>@if (repas.IsJeudiMidi)  {<span>X</span>} </td>
+            <td>@if (repas.IsJeudiSoir)  {<span>X</span>} </td>
+            <td>@if (repas.IsVendrediMidi)  {<span>X</span>} </td>
+        </tr>
+    }
+    <tr>
+        <td>Compteur</td>
+        <td>@Model.NbRepasLundiMidi </td>
+        <td>@Model.NbRepasLundiSoir </td>
+        <td>@Model.NbRepasMardiMidi </td>
+        <td>@Model.NbRepasMardiSoir </td>
+        <td>@Model.NbRepasMercrediMidi </td>
+        <td>@Model.NbRepasMercrediSoir </td>
+        <td>@Model.NbRepasJeudiMidi </td>
+        <td>@Model.NbRepasJeudiSoir </td>
+        <td>@Model.NbRepasVendrediMidi </td>
+    </tr>
+</table>

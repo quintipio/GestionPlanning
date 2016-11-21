@@ -1,0 +1,101 @@
+﻿@model GestionPlanning.ViewModel.EvenementViewModel
+
+@{
+    ViewBag.Title = "Mes évènements";
+}
+
+<h2>Mes évènements</h2>
+
+@Html.ActionLink("Créer un évènement", "Create", "Evenements")
+<p>Evènements dont je suis propriétaire :</p>
+<table class="table">
+    <tr>
+        <th>
+            Evènements
+        </th>
+        <th>
+            Date
+        </th>
+        <th></th>
+    </tr>
+    @foreach (var even in Model.EvenementsPersoCreer)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => even.Titre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => even.Date)
+                @Html.Label("-")
+                @Html.DisplayFor(modelItem => even.DemiJournee)
+
+                @if (even.DateB != null)
+                {
+                    @Html.Label(" --- ")
+                    @Html.DisplayFor(modelItem => even.DateB)
+                    @Html.Label("-")
+                    @Html.DisplayFor(modelItem => even.DemiJourneeB)
+                }
+
+                @if (even.DateC != null)
+                {
+                    @Html.Label(" --- ")
+                    @Html.DisplayFor(modelItem => even.DateC)
+                    @Html.Label("-")
+                    @Html.DisplayFor(modelItem => even.DemiJourneeC)
+                }
+            </td>
+            <td>
+                @Html.ActionLink("Modifier", "Edit", new { id = even.Id })
+            </td>
+        </tr>
+    }
+</table>
+
+    <br/>
+    <br/>
+
+    <p>Evènements auquel je suis invité :</p>
+<table class="table">
+        <tr>
+            <th>
+                Evènements
+            </th>
+            <th>
+                Date
+            </th>
+            <th></th>
+        </tr>
+        @foreach (var even in Model.EvenementsParticipe)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => even.Titre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => even.Date)
+                    @Html.Label("-")
+                    @Html.DisplayFor(modelItem => even.DemiJournee)
+
+                    @if (even.DateB != null)
+                {
+                        @Html.Label(" --- ")
+                        @Html.DisplayFor(modelItem => even.DateB)
+                        @Html.Label("-")
+                        @Html.DisplayFor(modelItem => even.DemiJourneeB)
+                    }
+
+                    @if (even.DateC != null)
+                {
+                        @Html.Label(" --- ")
+                        @Html.DisplayFor(modelItem => even.DateC)
+                        @Html.Label("-")
+                        @Html.DisplayFor(modelItem => even.DemiJourneeC)
+                    }
+                </td>
+                <td>
+                    @Html.ActionLink("Consulter", "Consult", new { id = even.Id })
+                </td>
+            </tr>
+        }
+</table>

@@ -1,0 +1,151 @@
+﻿@using GestionPlanning.Enum
+@model GestionPlanning.ViewModel.UserDateEventViewModel
+@{
+    ViewBag.Title = "Planning";
+    var nomPole = "";
+}
+
+<h2>Planning</h2>
+
+@using (Html.BeginForm("Index", "Planning", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    <input type="hidden" value="@Model.DateEnCours" name="inputDate"/>
+    
+    <div>
+        <h3>@Html.DisplayFor(model => model.Annee)</h3>
+    </div>
+
+    <div>
+        <h3>
+            <input type="submit" value="<" name="PreviousMonth"/>
+            @Html.DisplayFor(model => model.Mois)
+            <input type="submit" value=">" name="NextMonth" />
+        </h3>
+    </div>
+
+    <table>
+        <tr>
+            <td>
+                <table class="planning">
+                    <tr>
+                        <th />
+                        @foreach (var item in Model.ListeJours)
+                        {
+                            <th style="@(item.IsFerie ? "background-color: grey" : "background-color: white")">@Html.DisplayFor(modelItem => item.Date.Day)<br />@Html.DisplayFor(modelItem => item.LettreJour)</th>
+                        }
+                    </tr>
+                    @foreach (var itemUtil in Model.ListeUtilisateurs)
+                    {
+                        if (itemUtil.Poles.Nom != nomPole)
+                        {
+                            nomPole = itemUtil.Poles.Nom;
+                            <tr>
+                                <td style="background-color: grey;"><b>@nomPole.ToUpper()</b></td>
+                                @foreach (var itemDate in Model.ListeJours)
+                                {
+                                    <td style="background-color: grey;" />
+                                }
+                            </tr>
+                        }
+
+                        <tr>
+                            <td style="width: 150px;">@Html.DisplayFor(modelItem => itemUtil.Nom) @Html.DisplayFor(modelItem => itemUtil.Prenom)</td>
+
+                            @foreach (var itemDate in Model.ListeJours)
+                            {
+                                <td>
+                                    <table class="journeePlanning">
+                                        <tr>
+                                            <td style="@((itemDate.IsFerie || (itemDate.IsPcp && itemUtil.Grades.Armes.IsPcp) || (itemDate.IsRtt && itemUtil.Grades.Armes.IsRtt)) ? "background-color: grey" : "background-color: white")">
+                                               @if (itemUtil.Activites.Count(x => (x.DateDebut < itemDate.Date && x.DateFin >= itemDate.Date) ||
+                                                                                  (x.DateDebut == itemDate.Date && x.DemiJourneeDebut == DemiJourneeEnum.MATIN)) > 0)
+                                               {
+                                                   var activite = itemUtil.Activites.First(x => (x.DateDebut < itemDate.Date && x.DateFin >= itemDate.Date) ||
+                                                                                                (x.DateDebut == itemDate.Date && x.DemiJourneeDebut == DemiJourneeEnum.MATIN));
+                                                   var type = Model.ListeTypesActivites.First(x => x.Id == activite.TypeActiviteId);
+                                                   if (itemUtil.EvenementsUtilisateurs.Where(x => x.DateSelected != null && x.DemiJourneeSelected != null).Count(x => x.DateSelected.Value == itemDate.Date && x.DemiJourneeSelected.Value == DemiJourneeEnum.MATIN) > 0)
+                                                   {
+                                                       <div class="divPlanning" style="background-color: #@type.Couleurs.CodeCouleur" title="@itemUtil.EvenementsUtilisateurs.First(x => x.DateSelected != null && x.DemiJourneeSelected != null && x.DateSelected.Value == itemDate.Date && x.DemiJourneeSelected.Value == DemiJourneeEnum.MATIN).Evenements.Titre">
+                                                           @Html.Label("E")
+                                                       </div>
+                                                   }
+                                                   else
+                                                   {
+                                                       <div class="divPlanning" style="background-color: #@type.Couleurs.CodeCouleur">
+                                                       </div>
+                                                   }
+                                               }
+                                               else
+                                               {
+                                                   if (itemUtil.EvenementsUtilisateurs.Where(x => x.DateSelected != null && x.DemiJourneeSelected != null).Count(x => x.DateSelected.Value == itemDate.Date && x.DemiJourneeSelected.Value == DemiJourneeEnum.MATIN) > 0)
+                                                   {
+                                                       <div class="divPlanning" title="@itemUtil.EvenementsUtilisateurs.First(x => x.DateSelected != null && x.DemiJourneeSelected != null && x.DateSelected.Value == itemDate.Date && x.DemiJourneeSelected.Value == DemiJourneeEnum.MATIN).Evenements.Titre">
+                                                           @Html.Label("E")
+                                                       </div>
+                                                   }
+                                               }
+</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="@((itemDate.IsFerie || (itemDate.IsPcp && itemUtil.Grades.Armes.IsPcp) || (itemDate.IsRtt && itemUtil.Grades.Armes.IsRtt)) ? "background-color: grey" : "background-color: white")">
+                                                @if (itemUtil.Activites.Count(x => (x.DateDebut <= itemDate.Date && x.DateFin > itemDate.Date) ||
+                            (x.DateFin == itemDate.Date && x.DemiJourneeFin == DemiJourneeEnum.APRESMIDI)) > 0)
+                                                {
+                                                    var activite = itemUtil.Activites.First(x => (x.DateDebut <= itemDate.Date && x.DateFin > itemDate.Date) ||
+                                                                                                (x.DateFin == itemDate.Date && x.DemiJourneeFin == DemiJourneeEnum.APRESMIDI));
+                                                    var type = Model.ListeTypesActivites.First(x => x.Id == activite.TypeActiviteId);
+                                                        if (itemUtil.EvenementsUtilisateurs.Where(x => x.DateSelected != null && x.DemiJourneeSelected != null).Count(x => x.DateSelected.Value == itemDate.Date && x.DemiJourneeSelected.Value == DemiJourneeEnum.APRESMIDI) > 0)
+                                                        {
+                                                            <div class="divPlanning" style="background-color: #@type.Couleurs.CodeCouleur" title="@itemUtil.EvenementsUtilisateurs.First(x => x.DateSelected != null && x.DemiJourneeSelected != null && x.DateSelected.Value == itemDate.Date && x.DemiJourneeSelected.Value == DemiJourneeEnum.APRESMIDI).Evenements.Titre">
+                                                                @Html.Label("E")
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="divPlanning" style="background-color: #@type.Couleurs.CodeCouleur">
+                                                            </div>
+                                                         }
+                                                 }
+                                                 else
+                                                 {
+                                                    if (itemUtil.EvenementsUtilisateurs.Where(x => x.DateSelected != null && x.DemiJourneeSelected != null).Count(x => x.DateSelected.Value == itemDate.Date && x.DemiJourneeSelected.Value == DemiJourneeEnum.APRESMIDI) > 0)
+                                                    {
+                                                        <div class="divPlanning" title="@itemUtil.EvenementsUtilisateurs.First(x => x.DateSelected != null && x.DemiJourneeSelected != null && x.DateSelected.Value == itemDate.Date && x.DemiJourneeSelected.Value == DemiJourneeEnum.APRESMIDI).Evenements.Titre">
+                                                            @Html.Label("E")
+                                                        </div>
+                                                    }
+                                                 }
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            }
+                        </tr>
+                    }
+                </table>
+            </td>
+            <td>
+                <table class="table" style="width: 200px;">
+                    <tr>
+                        <th>Type d'activité</th>
+                        <th>Couleur</th>
+                    </tr>
+
+                    @foreach (var item in Model.ListeTypesActivites)
+                    {
+                        <tr>
+                            <td>
+                                @item.Nom
+                            </td>
+                            <td>
+                                <div style="width: 30px; height: 30px; background-color: #@item.Couleurs.CodeCouleur"></div>
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </td>
+        </tr>
+    </table>
+}
+

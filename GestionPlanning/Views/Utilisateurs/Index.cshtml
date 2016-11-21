@@ -1,0 +1,25 @@
+﻿@using GridMvc.Html
+@model IEnumerable<GestionPlanning.Models.Utilisateurs>
+
+@{
+    ViewBag.Title = "Liste des utilisateurs";
+}
+
+<h2>Liste des utilisateurs</h2>
+
+<p>
+    @Html.ActionLink("Ajouter un utilisateur", "Create")
+</p>
+
+@Html.Grid(Model).Columns(columns =>
+{
+    columns.Add(model => model.Nom).Sortable(true).SetWidth(150);
+    columns.Add(model => model.Poles.Nom).Titled("Pole").Sortable(true).SetWidth(150);
+    columns.Add(model => model.Email).Sortable(true).SetWidth(150);
+    columns.Add(model => model.Role).Sortable(true).SetWidth(150);
+    columns.Add().Encoded(false).Sanitized(false).RenderValueAs(model => Html.ActionLink("Modifier", "Edit", new { id = model.Id }, null).ToHtmlString());
+    columns.Add().Encoded(false).Sanitized(false).RenderValueAs(model => Html.ActionLink("Détails", "Details", new { id = model.Id }, null).ToHtmlString());
+    columns.Add().Encoded(false).Sanitized(false).RenderValueAs(model => Html.ActionLink("Supprimer", "Delete", new { id = model.Id }, null).ToHtmlString());
+    columns.Add().SetWidth(100).Encoded(false).Sanitized(false).RenderValueAs(model => Html.ActionLink("Modifier le mot de passe", "ChangePassword", new { id = model.Id }, null).ToHtmlString());
+}).WithPaging(10)
+

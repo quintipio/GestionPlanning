@@ -1,0 +1,26 @@
+﻿@using GridMvc.Html
+@model IEnumerable<GestionPlanning.Models.Logs>
+
+    @{
+        ViewBag.Title = "Logs";
+    }
+
+<h2>Logs des 30 derniers jours</h2>
+
+
+@using (Html.BeginForm())
+{
+
+    <input type="submit" value="Effacer tout les logs" name="DeleteLogs" class="btn btn-default" />
+    <input type="submit" value="Télécharger tout les logs" name="DownloadLogs" class="btn btn-default"/>
+
+
+    @Html.Grid(Model).Columns(columns =>
+    {
+    columns.Add(model => model.Date).Titled("Date").Sortable(true);
+    columns.Add(model => model.Type).Sortable(true);
+    columns.Add(model => model.Texte);
+}).WithPaging(10)
+    
+}
+    

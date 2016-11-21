@@ -1,0 +1,46 @@
+﻿@model GestionPlanning.Models.TypeActivites
+
+@{
+    ViewBag.Title = "Modifier une activité";
+}
+
+<h2>Modifier une activité</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(x => x.Etat)
+    
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Nom)
+                @Html.TextBoxFor(model => model.Nom, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Nom, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ModifierRepas)
+                    @Html.CheckBoxFor(model => model.ModifierRepas)
+                    @Html.ValidationMessageFor(model => model.ModifierRepas, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CouleursId, "Couleur")
+                @Html.DropDownList("CouleursId",null, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.CouleursId, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+                <input type="submit" value="Modifier" class="btn btn-default" />
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Page précédente", "Index")
+</div>

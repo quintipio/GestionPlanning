@@ -1,0 +1,49 @@
+﻿@model GestionPlanning.ViewModel.PermissionsViewModel
+
+@{
+    ViewBag.Title = "Gestion des permissions";
+}
+
+<h2>Gestion des permissions</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <input type="hidden" value="@Model.Annee" name="inputAnnee" />
+    <div>
+        <h3>
+            <input type="submit" value="<" name="PreviousYear"/>
+            @Html.DisplayFor(model => model.Annee)
+            <input type="submit" value=">" name="NextYear"/>
+        </h3>
+    </div>
+    @Html.ActionLink("Ajouter", "Create", new { year = Model.Annee })
+    <table class="table">
+        <tr>
+            <th>
+               Date
+            </th>
+            <th>
+               Type
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model.ListePermissions)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TypePerm)
+                </td>
+                <td>
+                    @Html.ActionLink("Supprimer", "Delete", new { id = item.Id })
+                </td>
+            </tr>
+        }
+
+    </table>
+}

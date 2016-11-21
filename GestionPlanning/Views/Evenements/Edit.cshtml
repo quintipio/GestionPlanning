@@ -1,0 +1,79 @@
+﻿@using GridMvc.Html
+@model GestionPlanning.Models.Evenements
+
+@{
+    ViewBag.Title = "Modifier un évènement";
+}
+
+<h2>Modifier un évènement</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.Id);
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Titre)
+            @Html.TextBoxFor(model => model.Titre, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Titre, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Date)
+        <input type="date" id="Date" name="Date" value="@($"{Model.Date:yyyy-MM-dd}")" class="form-control"/>
+        @Html.EnumDropDownListFor(model => model.DemiJournee, null, new {@class = "form-control", style = "margin-top:5px;"})
+        @Html.ValidationMessageFor(model => model.DemiJournee, "", new {@class = "text-danger"})
+        @Html.ValidationMessageFor(model => model.Date, "", new {@class = "text-danger"})
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.DateB)
+        <input type="date" id="DateB" name="DateB" value="@($"{Model.DateB:yyyy-MM-dd}")" class="form-control"/>
+        @Html.EnumDropDownListFor(model => model.DemiJourneeB, "", new {@class = "form-control", style = "margin-top:5px;"})
+        @Html.ValidationMessageFor(model => model.DemiJourneeB, "", new {@class = "text-danger"})
+        @Html.ValidationMessageFor(model => model.DateB, "", new {@class = "text-danger"})
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.DateC)
+        <input type="date" id="DateC" name="DateC" value="@($"{Model.DateC:yyyy-MM-dd}")" class="form-control" />
+        @Html.EnumDropDownListFor(model => model.DemiJourneeC, "", new { @class = "form-control", style = "margin-top:5px;" })
+        @Html.ValidationMessageFor(model => model.DemiJourneeC, "", new { @class = "text-danger" })
+        @Html.ValidationMessageFor(model => model.DateC, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.DateVerrou)
+        <input type="date" id="DateVerrou" name="DateVerrou" value="@($"{Model.DateVerrou:yyyy-MM-dd}")" class="form-control" />
+        @Html.ValidationMessageFor(model=> model.DateVerrou, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Commentaire)
+            @Html.TextAreaFor(model => model.Commentaire, new { style = "width:300px; height: 100px;", @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Commentaire, "", new { @class = "text-danger" })
+    </div>
+    <br />
+
+    <div class="form-group">
+        <br/>
+        <input type="submit" value="Modifier" class="btn btn-default" name="ModifierEven"/> | 
+        @Html.ActionLink("Page précédente", "MesEvenements")
+    </div>
+    <div class="form-group">
+        <br />
+        <input type="submit" value="Supprimer" class="btn btn-default" name="SupprimerEven"/>
+    </div>
+
+        <br />
+        <p><b>Participants : </b></p>
+
+            @Html.Grid(Model.EvenementsUtilisateurs).Columns(columns =>
+       {
+           columns.Add(model => model.Utilisateurs.Nom).Titled("Nom").Sortable(true);
+           columns.Add(model => model.Utilisateurs.Prenom).Titled("Prenom").Sortable(false);
+           columns.Add().Titled("Est présent").Sortable(true).RenderValueAs(model => (model.IsPresent.HasValue) ? ((model.IsPresent.Value) ? "OUI" : "NON") : " ");
+           columns.Add(model => model.Commentaire).Titled("Commentaire");
+       }).WithPaging(10)
+}

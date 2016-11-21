@@ -1,0 +1,102 @@
+﻿@model GestionPlanning.Models.Application
+
+@{
+    ViewBag.Title = "Paramétrage de l'Application";
+}
+
+<h2>Paramétrage de l'Application</h2>
+
+
+@using (Html.BeginForm("Edit", "Applications", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    <script>
+        $(document).ready(function () {
+            $('#saveButton').click(function () {
+                $(this).prop("disabled", true);
+                if (!$('form').valid())
+                {
+                    $(this).prop("disabled",false);
+                    return false;
+                }
+                $('form').submit();
+            });
+        });
+    </script>
+
+    <div class="form-horizontal">
+        <hr/>
+        @Html.ValidationSummary(true, "", new {@class = "text-danger"})
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.AdresseMailEnvoyeur)
+            @Html.TextBoxFor(model => model.AdresseMailEnvoyeur, new {@class = "form-control"})
+            @Html.ValidationMessageFor(model => model.AdresseMailEnvoyeur, "", new {@class = "text-danger"})
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.MotDePasseMailEnvoyeur)
+            @Html.TextBoxFor(model => model.MotDePasseMailEnvoyeur, new {@class = "form-control"})
+            @Html.ValidationMessageFor(model => model.MotDePasseMailEnvoyeur, "", new {@class = "text-danger"})
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.AdresseSmtp)
+            @Html.TextBoxFor(model => model.AdresseSmtp, new {@class = "form-control"})
+            @Html.ValidationMessageFor(model => model.AdresseSmtp, "", new {@class = "text-danger"})
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.PortSmtp)
+            @Html.TextBoxFor(model => model.PortSmtp, new {@class = "form-control", style = "width:50px;" })
+            @Html.ValidationMessageFor(model => model.PortSmtp, "", new {@class = "text-danger"})
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.EnableSsl)
+            @Html.CheckBoxFor(model => model.EnableSsl)
+            @Html.ValidationMessageFor(model => model.EnableSsl, "", new {@class = "text-danger"})
+        </div>
+
+        @if (Model.IsSUperAdmin)
+        {
+            <div class="form-group">
+                @Html.LabelFor(model => model.NomAppli)
+                @Html.TextBoxFor(model => model.NomAppli, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.NomAppli, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.NomUnite)
+                @Html.TextBoxFor(model => model.NomUnite, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.NomUnite, "", new { @class = "text-danger" })
+            </div>
+        }
+        else
+        {
+            @Html.HiddenFor(model => model.NomAppli)
+            @Html.HiddenFor(model => model.NomUnite)
+        }
+
+        <div class="form-group">
+            <input type="submit" value="Sauvegarder les paramètres" name="SubmitApp" class="btn btn-default" id="saveButton"/>
+        </div>
+
+        <div class="form-group">
+            <p><b>Charger un fichier de permission pour un militaire : </b>
+            </p>
+            <input type="file" name="file" class="btn btn-default" class = "form-control"/>
+            @Html.ValidationMessage("fileMili", "", new {@class = "text-danger"})
+            <input type="submit" name="SubmitFileMili" id="SubmitMili" value="Charger" class="btn btn-default"/>
+        </div>
+
+        <div class="form-group">
+            <p><b>Charger un fichier de permission pour un civil : </b>
+            </p>
+            <input type="file" name="file" class="btn btn-default" class = "form-control"/>
+            @Html.ValidationMessage("fileCivil", "", new {@class = "text-danger"})
+            <input type="submit" name="SubmitFileCivil" id="SubmitCivil" value="Charger" class="btn btn-default"/>
+        </div>
+    </div>
+}

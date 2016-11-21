@@ -1,0 +1,37 @@
+﻿@model System.Linq.IOrderedEnumerable<GestionPlanning.Models.Utilisateurs>
+@{
+    ViewBag.Title = "Annuaire";
+    var lettreEnCours = ' ';
+}
+
+<h2>Annuaire</h2>
+<table style="width:400px;">
+@foreach (var item in Model)
+{
+    if (lettreEnCours != item.Nom[0])
+    {
+        lettreEnCours = item.Nom[0];
+
+        <tr>
+            <td>
+                <p style="background-color: grey; text-align: center;">@lettreEnCours</p>
+            </td>
+        </tr>
+    }
+    <tr>
+        <td>
+            <p style="background-color: white">
+                <table style="width:400px;">
+                    <tr>
+                        <td style="width:200px;">@item.Nom.ToUpper() @item.Prenom</td>
+                        <td style="width:100px;"><b>@item.Poles.Nom</b></td>
+                        <td style="width:100px;">@item.Pnia</td>
+                    </tr>
+                </table>
+            </p>
+        </td>
+    </tr>
+
+}
+
+</table>

@@ -1,0 +1,142 @@
+﻿@using GridMvc.Html
+@model GestionPlanning.ViewModel.EvenementViewModel
+@{
+    ViewBag.Title = "Créer un évènement";
+}
+
+<h2>Créer un évènement</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <script>
+        $(document).ready(function () {
+            $('#saveButton').click(function () {
+                $(this).prop("disabled", true);
+                if (!$('form').valid())
+                {
+                    $(this).prop("disabled",false);
+                    return false;
+                }
+                $('form').submit();
+            });
+        });
+    </script>
+
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.EvenementsCre.Titre)
+            @Html.TextBoxFor(model => model.EvenementsCre.Titre, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.EvenementsCre.Titre, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.EvenementsCre.Date)
+        <input type="date" id="EvenementsCre.Date" name="EvenementsCre.Date" value="@($"{Model.EvenementsCre.Date:yyyy-MM-dd}")" class="form-control" />
+        @Html.EnumDropDownListFor(model => model.EvenementsCre.DemiJournee, null, new {@class = "form-control", style = "margin-top:5px;"})
+        @Html.ValidationMessageFor(model => model.EvenementsCre.DemiJournee, "", new {@class = "text-danger"})
+        @Html.ValidationMessageFor(model => model.EvenementsCre.Date, "", new {@class = "text-danger"})
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.EvenementsCre.DateB)
+        <input type="date" id="EvenementsCre.DateB" name="EvenementsCre.DateB" value="@($"{Model.EvenementsCre.DateB:yyyy-MM-dd}")" class="form-control" />
+
+        @Html.EnumDropDownListFor(model => model.EvenementsCre.DemiJourneeB, "", new {@class = "form-control", style = "margin-top:5px;"})
+        @Html.ValidationMessageFor(model => model.EvenementsCre.DemiJourneeB, "", new {@class = "text-danger"})
+        @Html.ValidationMessageFor(model => model.EvenementsCre.DateB, "", new {@class = "text-danger"})
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.EvenementsCre.DateC)
+        <input type="date" id="EvenementsCre.DateC" name="EvenementsCre.DateC" value="@($"{Model.EvenementsCre.DateC:yyyy-MM-dd}")" class="form-control" />
+
+        @Html.EnumDropDownListFor(model => model.EvenementsCre.DemiJourneeC, null, new { @class = "form-control", style = "margin-top:5px;" })
+        @Html.ValidationMessageFor(model => model.EvenementsCre.DemiJourneeC, "", new { @class = "text-danger" })
+        @Html.ValidationMessageFor(model => model.EvenementsCre.DateC, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.EvenementsCre.DateVerrou)
+        <input type="date" id="EvenementsCre.DateVerrou" name="EvenementsCre.DateVerrou" value="@($"{Model.EvenementsCre.DateVerrou:yyyy-MM-dd}")" class="form-control"/>
+        @Html.ValidationMessageFor(model => model.EvenementsCre.DateVerrou, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.EvenementsCre.Commentaire)
+            @Html.TextAreaFor(model => model.EvenementsCre.Commentaire, new { @class = "form-control", style = "width:300px; height: 100px;" })
+            @Html.ValidationMessageFor(model => model.EvenementsCre.Commentaire, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        <p style="margin-top: 80px;">Sélection par :</p>
+        <script>
+            function isactive(object) {
+                if (object.value == 1) {
+                    document.getElementById("divPoles").style.display = "block";
+                    document.getElementById("divUtil").style.display = "none";
+                    var elements = document.getElementById("SelectedPolesListbox").options;
+
+                    for (var i = 0; i < elements.length; i++) {
+                        elements[i].selected = false;
+                    }
+
+
+                } else {
+                    document.getElementById("divPoles").style.display = "none";
+                    document.getElementById("divUtil").style.display = "block";
+                    var elements = document.getElementById("SelectedUtilisateursListbox").options;
+
+                    for (var i = 0; i < elements.length; i++) {
+                        elements[i].selected = false;
+                    }
+                }
+            }
+        </script>
+        <label>
+            @Html.RadioButton("radioSelect", 1, new
+            {
+                onclick = "isactive(this);"
+
+            })
+            Par poles
+        </label>
+        <label>
+            @Html.RadioButton("radioSelect", 0, new
+            {
+                onclick = "isactive(this);"
+
+            })
+            Par utilisateurs
+        </label>
+        @Html.ValidationMessage("selectionError", "", new { @class = "text-danger" })
+    </div>
+
+    <div>
+        <div id="divPoles" style="display: none">
+            <p>Liste des pôles :</p>
+            @Html.Grid(Model.PoleItems).Columns(columns =>
+            {
+                columns.Add().Encoded(false).Sanitized(false).SetWidth(30).RenderValueAs(o => Html.CheckBox("PolesIdChecked", false, new { name = "selectedPolesIds", value = o.Id }));
+                columns.Add(model => model.Nom).Titled("Nom").Sortable(true).SetWidth(150);
+            }).WithPaging(10)
+        </div>
+
+        <div id="divUtil" style="display: none">
+            <p>Liste des utilisateurs : </p>
+            @Html.Grid(Model.UtilisateursItems).Columns(columns =>
+       {
+       columns.Add().Encoded(false).Sanitized(false).SetWidth(30).RenderValueAs(o => Html.CheckBox("UtilisateursIdChecked", false, new { name = "selectedUtilisateursIds", value = o.Id }));
+           columns.Add().Encoded(false).Sanitized(false).Sortable(true).SetWidth(150).RenderValueAs(o => o.Nom+" "+o.Prenom).Titled("Nom");
+       }).WithPaging(10)
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+
+            <input type="submit" value="Créer" class="btn btn-default" id="saveButton"/>
+        </div>
+    </div>
+}
